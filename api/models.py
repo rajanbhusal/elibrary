@@ -10,18 +10,18 @@ class User(models.Model):
 
 class Book(models.Model):
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True,blank=True)
-    bookID = models.UUIDField(primary_key=True)
+    bookID = models.UUIDField(primary_key=True,default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
     isbn = models.CharField(max_length=13, unique=True)
     publishedDate = models.DateField()
     genre = models.CharField(max_length=100)
 
 class BookDetails(models.Model):
-    detailsID = models.UUIDField(primary_key=True)
-    bookID = models.OneToOneField(Book, on_delete=models.CASCADE)
-    numberOfPages = models.PositiveIntegerField()
-    publisher = models.CharField(max_length=255)
-    language = models.CharField(max_length=50)
+    detailsID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    book = models.OneToOneField(Book, on_delete=models.CASCADE, null=True, blank=True)
+    numberOfPages = models.PositiveIntegerField(blank=True, null=True)
+    publisher = models.CharField(max_length=255, blank=True, null=True)
+    language = models.CharField(max_length=50, blank=True, null=True)
 
 class BorrowedBooks(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
